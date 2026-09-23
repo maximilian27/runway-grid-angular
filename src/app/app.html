@@ -1,10 +1,42 @@
-<main style="height: 100vh; width: 100vw; margin: 0; overflow: hidden;">
-  <app-runway-wrapper [items]="massiveDataset" [rowSize]="40">
-    <!-- Project your template here -->
+<main style="height: 400px; width: 400px; margin: 0; overflow: hidden; background: #f8f9fa;">
+  <app-runway-wrapper
+      [bufferSize]="10"
+      [items]="massiveDataset"
+      [rowSize]="48">
+
+    <!-- Complex Expandable Row Template -->
     <ng-template let-i="index" let-item>
-      <div style="padding: 8px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between;">
-        <span style="color: blue;">Row #{{ i }}</span>
+      <div [class.is-expanded]="item.expanded" class="row-card">
+
+        <!-- Header / Main Bar -->
+        <div class="row-header">
+          <div class="row-info">
+            <span class="row-badge">#{{ i }}</span>
+            <span class="row-title">{{ item.title }}</span>
+          </div>
+
+          @if (item.isExpandable) {
+            <button
+                (click)="toggleExpand(item, $event)"
+                [class.active]="item.expanded"
+                class="expand-btn">
+              {{ item.expanded ? 'Collapse ▲' : 'Expand ▼' }}
+            </button>
+          }
+        </div>
+
+        <!-- Collapsible Details Panel (Auto-Triggers ResizeObserver) -->
+        @if (item.isExpandable && item.expanded) {
+          <div class="row-details">
+            <div class="details-content">
+              <strong>Category:</strong> {{ item.category }}<br/>
+              <p>{{ item.details }}</p>
+            </div>
+          </div>
+        }
+
       </div>
     </ng-template>
+
   </app-runway-wrapper>
 </main>
