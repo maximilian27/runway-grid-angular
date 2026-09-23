@@ -1,12 +1,22 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
+import {RunwayWrapperComponent} from "../components/runway-wrapper/runway-wrapper";
 
 @Component({
-  imports: [RouterOutlet],
   selector: 'app-root',
-  styleUrl: './app.css',
-  templateUrl: './app.html',
+  standalone: true,
+  imports: [RunwayWrapperComponent],
+  template: `
+    <main style="height: 100vh; width: 100vw; margin: 0; overflow: hidden;">
+      <app-runway-wrapper 
+        [items]="massiveDataset"
+        [rowSize]="50">
+      </app-runway-wrapper>
+    </main>
+  `
 })
-export class App {
-  protected readonly title = signal('runway-grid-angular');
+export class AppComponent {
+  massiveDataset = Array.from({ length: 500000 }).map((_, i) => ({
+    id: i,
+    title: `Dynamic Item ${i} - Generated perfectly`
+  }));
 }
