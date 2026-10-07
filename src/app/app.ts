@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewEncapsulation} from '@angular/core';
 import {RunwayWrapperComponent} from "../components/runway-wrapper/runway-wrapper";
 
 interface DemoItem {
@@ -15,6 +15,7 @@ interface DemoItem {
   imports: [RunwayWrapperComponent],
   templateUrl: './app.html',
   styleUrls: ['./app.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent {
   massiveDataset: DemoItem[] = Array.from({length: 100000}).map((_, i) => {

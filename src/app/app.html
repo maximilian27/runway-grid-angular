@@ -6,19 +6,22 @@
 
     <!-- Complex Expandable Row Template -->
     <ng-template let-i="index" let-item>
-      <div [class.is-expanded]="item.expanded" class="row-card">
+      <div [class.is-expanded]="item.expanded"
+           [attr.part]="item.expanded ? 'row-card is-expanded' : 'row-card'"
+           class="row-card">
 
         <!-- Header / Main Bar -->
-        <div class="row-header">
-          <div class="row-info">
-            <span class="row-badge">#{{ i }}</span>
-            <span class="row-title">{{ item.title }}</span>
+        <div class="row-header" part="row-header">
+          <div class="row-info" part="row-info">
+            <span class="row-badge" part="row-badge">#{{ i }}</span>
+            <span class="row-title" part="row-title">{{ item.title }}</span>
           </div>
 
           @if (item.isExpandable) {
             <button
                 (click)="toggleExpand(item, $event)"
                 [class.active]="item.expanded"
+                [attr.part]="item.expanded ? 'expand-btn active' : 'expand-btn'"
                 class="expand-btn">
               {{ item.expanded ? 'Collapse ▲' : 'Expand ▼' }}
             </button>
@@ -27,10 +30,10 @@
 
         <!-- Collapsible Details Panel (Auto-Triggers ResizeObserver) -->
         @if (item.isExpandable && item.expanded) {
-          <div class="row-details">
-            <div class="details-content">
+          <div class="row-details" part="row-details">
+            <div class="details-content" part="details-content">
               <strong>Category:</strong> {{ item.category }}<br/>
-              <p>{{ item.details }}</p>
+              <p part="row-details-text">{{ item.details }}</p>
             </div>
           </div>
         }

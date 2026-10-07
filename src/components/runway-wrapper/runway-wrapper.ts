@@ -48,6 +48,7 @@ export class RunwayWrapperComponent implements OnInit {
       if (!item) return document.createElement('div');
 
       const container = document.createElement('div');
+      container.setAttribute('part', 'cell-content');
 
       if (templateRef) {
         const embeddedView = this.viewContainerRef.createEmbeddedView(templateRef, {
@@ -55,6 +56,7 @@ export class RunwayWrapperComponent implements OnInit {
           index: rowIndex,
           col: colIndex
         });
+        embeddedView.detectChanges();
 
         embeddedView.rootNodes.forEach(node => container.appendChild(node));
       } else {
