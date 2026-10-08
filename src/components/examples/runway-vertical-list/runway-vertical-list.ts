@@ -1,4 +1,5 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, viewChild, ViewEncapsulation } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RunwayWrapperComponent } from '../../runway-wrapper/runway-wrapper';
 
 interface DemoItem {
@@ -12,12 +13,16 @@ interface DemoItem {
 
 @Component({
   selector: 'app-runway-vertical-list-example',
-  imports: [RunwayWrapperComponent],
+  imports: [RunwayWrapperComponent, FormsModule],
   templateUrl: './runway-vertical-list.html',
   styleUrls: ['./runway-vertical-list.scss'],
   encapsulation: ViewEncapsulation.None
 })
 export class RunwayVerticalListExampleComponent {
+  readonly runwayWrapper = viewChild<RunwayWrapperComponent>(RunwayWrapperComponent);
+
+  targetIndex: number = 50000;
+
   massiveDataset: DemoItem[] = Array.from({ length: 100000 }).map((_, i) => {
     const isExpandable = i % 5 === 0;
     return {
@@ -35,5 +40,20 @@ export class RunwayVerticalListExampleComponent {
   toggleExpand(item: DemoItem, event: Event) {
     event.stopPropagation();
     item.expanded = !item.expanded;
+  }
+
+  jumpToIndex(index: number = this.targetIndex): void {
+    const target = Number(index);
+    if (!isNaN(target)) {
+      this.runwayWrapper()?.scrollToIndex(target);
+    }
+  }
+
+  scrollToTop(): void {
+    this.runwayWrapper()?.scrollToIndex(0);
+  }
+
+  scrollToBottom(): void {
+    this.runwayWrapper()?.scrollToIndex(this.massiveDataset.length - 1);
   }
 }

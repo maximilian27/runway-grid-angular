@@ -1,4 +1,4 @@
-<section style="height: 400px; width: 450px; margin: 0; overflow: hidden; background: #f8f9fa;">
+<section style="height: 450px; width: 450px; margin: 0; background: #f8f9fa;">
   <h2>Vertical list</h2>
   <app-runway-wrapper
       [bufferSize]="10"
@@ -47,4 +47,18 @@
     </ng-template>
 
   </app-runway-wrapper>
+
+  <div class="controls">
+    <input
+        [(ngModel)]="targetIndex"
+        [max]="massiveDataset.length - 1"
+        class="index-input"
+        id="index-input"
+        min="0"
+        placeholder="Index"
+        type="number"/>
+    <button (click)="jumpToIndex()" class="jump-btn" id="jump-btn">Jump to Index</button>
+    <button (click)="scrollToTop()" class="top-btn" id="start-btn">Top</button>
+    <button (click)="scrollToBottom()" class="bottom-btn" id="end-btn">Bottom</button>
+  </div>
 </section>

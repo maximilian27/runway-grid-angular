@@ -41,9 +41,23 @@ export class RunwayWrapperComponent implements OnInit {
     });
   }
 
+  scrollToIndex(index: number): void {
+    const grid = this.gridRef()?.nativeElement;
+    if (grid && typeof grid.scrollToIndex === 'function') {
+      grid.scrollToIndex(index);
+    }
+  }
+
+  scrollToCell(rowIndex: number, colIndex: number = 0): void {
+    const grid = this.gridRef()?.nativeElement;
+    if (grid && typeof grid.scrollToCell === 'function') {
+      grid.scrollToCell(rowIndex, colIndex);
+    }
+  }
+
   ngOnInit() {
     const templateRef = this.userTemplate();
-    
+
     this.gridRef().nativeElement.template = (item: any, rowIndex: number, colIndex: number) => {
       if (!item) return document.createElement('div');
 
