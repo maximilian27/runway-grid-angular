@@ -9,8 +9,7 @@ import {
   Signal,
   TemplateRef,
   viewChild,
-  ViewContainerRef,
-  ViewEncapsulation
+  ViewContainerRef
 } from '@angular/core';
 import 'runway-grid'; // Instantiates the WASM engine and registers <runway-grid>
 
@@ -19,9 +18,8 @@ import 'runway-grid'; // Instantiates the WASM engine and registers <runway-grid
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './runway-wrapper.html',
   styleUrls: ['./runway-wrapper.scss'],
-  encapsulation: ViewEncapsulation.None
-
 })
+
 export class RunwayWrapperComponent implements OnInit {
   items = input<any[]>([]);
   orientation = input<'vertical' | 'horizontal' | 'both'>('vertical');
