@@ -16,7 +16,7 @@ interface DemoItem {
   imports: [RunwayWrapperComponent, FormsModule],
   templateUrl: './runway-vertical-list.html',
   styleUrls: ['./runway-vertical-list.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.ShadowDom
 })
 export class RunwayVerticalListExampleComponent {
   private readonly runwayWrapper = viewChild<RunwayWrapperComponent>(RunwayWrapperComponent);
