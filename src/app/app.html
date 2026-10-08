@@ -1,5 +1,6 @@
 <main style="height: 400px; width: 400px; margin: 0; overflow: hidden; background: #f8f9fa;">
   <app-runway-wrapper
+      class="primary-grid"
       [bufferSize]="10"
       [items]="massiveDataset"
       [rowSize]="48">
@@ -7,7 +8,9 @@
     <!-- Complex Expandable Row Template -->
     <ng-template let-i="index" let-item>
       <div [class.is-expanded]="item.expanded"
-           [attr.part]="item.expanded ? 'row-card is-expanded' : 'row-card'"
+           [class.odd]="i % 2 !== 0"
+           [class.even]="i % 2 === 0"
+           [attr.part]="'row-card ' + (i % 2 === 0 ? 'even row-even row-card-even' : 'odd row-odd row-card-odd') + (item.expanded ? ' is-expanded' : '')"
            class="row-card">
 
         <!-- Header / Main Bar -->
