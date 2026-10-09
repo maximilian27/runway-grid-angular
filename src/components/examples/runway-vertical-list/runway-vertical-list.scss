@@ -3,6 +3,10 @@
 /* Target the exposed shadow parts on <runway-grid> scoped by CSS class */
 
 .primary-grid {
+  display: block;
+  height: 450px;
+  width: 450px;
+
   runway-grid::part(container) {
     box-sizing: border-box;
   }
@@ -139,7 +143,6 @@
   gap: 8px;
   align-items: center;
   padding: 12px 10px;
-  background: #ffffff;
   border-top: 1px solid #e0e0e0;
   width: 400px;
   box-sizing: border-box;
