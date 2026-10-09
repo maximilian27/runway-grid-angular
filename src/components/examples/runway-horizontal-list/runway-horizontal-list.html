@@ -1,0 +1,37 @@
+<section style="margin: 0; background: #f8f9fa;">
+  <h2>Horizontal list</h2>
+  <app-runway-wrapper
+      [orientation]="'horizontal'"
+      [bufferSize]="5"
+      [colSize]="120"
+      [columns]="columns"
+      [items]="placeholderData"
+      class="horizontal-grid">
+
+    <!-- orientation="horizontal" forces rowCount to 1, so the row item is always null -
+         only the column index drives what's rendered here. -->
+    <ng-template let-colIndex="col">
+      <div class="chip">
+        <span [style.background]="getColor(colIndex)" class="chip-dot"></span>
+        <strong class="chip-label">
+          #{{ colIndex }} {{ getLabel(colIndex) }}{{ isWide(colIndex) ? ' — extended description text to force a much wider chip' : '' }}
+        </strong>
+      </div>
+    </ng-template>
+
+  </app-runway-wrapper>
+
+  <div class="controls">
+    <input
+        [(ngModel)]="targetIndex"
+        [max]="columnCount - 1"
+        class="index-input"
+        id="h-index-input"
+        min="0"
+        placeholder="Index"
+        type="number"/>
+    <button (click)="jumpToIndex()" class="jump-btn" id="h-jump-btn">Jump to Index</button>
+    <button (click)="scrollToStart()" class="start-btn" id="h-start-btn">Start</button>
+    <button (click)="scrollToEnd()" class="end-btn" id="h-end-btn">End</button>
+  </div>
+</section>

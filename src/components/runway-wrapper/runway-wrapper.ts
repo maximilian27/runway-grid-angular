@@ -24,40 +24,54 @@ export class RunwayWrapperComponent implements OnInit {
   public items = input<any[]>([]);
   public orientation = input<'vertical' | 'horizontal' | 'both'>('vertical');
   public rowSize = input<number>(40);
+  public colSize = input<number>(100);
   public bufferSize = input<number>(10);
+  // Column definitions (or a plain column count), for `orientation="horizontal"`/`"both"`.
+  // Must be applied to the native element before `items`/`data`, mirroring the underlying
+  // <runway-grid> API contract.
+  public columns = input<readonly unknown[] | number | undefined>(undefined);
 
   public userTemplate = contentChild<TemplateRef<any>>(TemplateRef);
-  private gridRef: Signal<ElementRef> = viewChild.required<ElementRef>('grid');
+  public readonly gridRef: Signal<ElementRef> = viewChild.required<ElementRef>('grid');
 
   constructor(private viewContainerRef: ViewContainerRef) {
     // Replaces the effect() hook: pushes data updates imperatively once rendered/updated
     afterNextRender(() => {
       const grid = this.gridRef()?.nativeElement;
       if (grid) {
+        const columns = this.columns();
+        if (columns !== undefined) {
+          grid.columns = columns;
+        }
         grid.data = this.items();
       }
     });
   }
 
   public ngOnInit() {
-    const templateRef = this.userTemplate();
-
-    this.gridRef().nativeElement.template = (item: any, rowIndex: number, colIndex: number) => {
-      if (!item) return document.createElement('div');
-
+    this.gridRef().nativeElement.template = (
+        item: any,
+        rowIndex: number,
+        colIndex: number,
+        rowCount: number,
+        colCount: number
+    ) => {
       const container = document.createElement('div');
       container.setAttribute('part', 'cell-content');
 
+      const templateRef = this.userTemplate();
       if (templateRef) {
         const embeddedView = this.viewContainerRef.createEmbeddedView(templateRef, {
           $implicit: item,
           index: rowIndex,
-          col: colIndex
+          col: colIndex,
+          rowCount,
+          colCount
         });
         embeddedView.detectChanges();
 
         embeddedView.rootNodes.forEach(node => container.appendChild(node));
-      } else {
+      } else if (item) {
         container.textContent = String(item.title || JSON.stringify(item));
       }
 
