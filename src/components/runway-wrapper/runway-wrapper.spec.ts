@@ -34,4 +34,34 @@ describe('RunwayWrapperComponent', () => {
     component.scrollToCell(10, 2);
     expect(grid.scrollToCell).toHaveBeenCalledWith(10, 2);
   });
+
+  it('should delegate appendData to native grid element', () => {
+    const grid = component.gridRef().nativeElement;
+    grid.appendData = vi.fn();
+
+    const newItems = [{id: 1}, {id: 2}];
+    component.appendData(newItems);
+    expect(grid.appendData).toHaveBeenCalledWith(newItems);
+  });
+
+  it('should read rows from the native grid element', () => {
+    const grid = component.gridRef().nativeElement;
+    grid.rows = [{id: 1}, {id: 2}, {id: 3}];
+
+    expect(component.rows).toEqual([{id: 1}, {id: 2}, {id: 3}]);
+  });
+
+  it('should emit rangechange when the native grid dispatches a rangechange event', () => {
+    const grid = component.gridRef().nativeElement;
+    const spy = vi.fn();
+    component.rangechange.subscribe(spy);
+
+    const event = {
+      buffered: {startRow: 0, endRow: 10, startCol: 0, endCol: 0},
+      viewport: {startRow: 0, endRow: 5, startCol: 0, endCol: 0},
+    };
+    grid.dispatchEvent(Object.assign(new Event('rangechange'), event));
+
+    expect(spy).toHaveBeenCalled();
+  });
 });

@@ -1,0 +1,28 @@
+<section style="width: 450px; margin: 0; background: #f8f9fa; height: 100%;">
+  <h2>Infinite scroll (vertical)</h2>
+  <app-runway-wrapper
+      (rangechange)="onRangeChange($event)"
+      [bufferSize]="5"
+      [rowSize]="70"
+      class="infinite-grid">
+
+    <!-- Row body text/title hue vary by index to simulate server-fetched content of
+         differing length (and therefore differing measured height). -->
+    <ng-template let-index="index" let-item>
+      <div
+          [attr.part]="'infinite-row ' + (index % 2 === 0 ? 'row-even' : 'row-odd')"
+          [class.row-even]="index % 2 === 0"
+          [class.row-odd]="index % 2 !== 0"
+          class="infinite-row">
+        <strong [style.color]="'hsl(' + titleHue(index) + ', 65%, 40%)'" class="row-title"
+                part="row-title">Row {{ index }}</strong>
+        <p class="row-text" part="row-text">{{ bodyText(item.lines) }}</p>
+      </div>
+    </ng-template>
+
+  </app-runway-wrapper>
+
+  <div class="controls">
+    <span class="status-text" id="infinite-status">{{ statusText() }}</span>
+  </div>
+</section>
