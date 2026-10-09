@@ -25,9 +25,12 @@ export class RunwayInfiniteVerticalExampleComponent {
   readonly runwayWrapper = viewChild<RunwayWrapperComponent>(RunwayWrapperComponent);
 
   private fetching = false;
-  private loadedRows = 0;
 
-  readonly loadedCount = signal(0);
+  // The actual rows loaded so far - bound to the wrapper's `items` input so the native
+  // grid is always initialized/kept in sync with real data (not the wrapper's empty
+  // default), rather than relying solely on imperative `appendData()` calls.
+  readonly loadedItems = signal<InfiniteRow[]>([]);
+  readonly loadedCount = computed(() => this.loadedItems().length);
   readonly isFetching = signal(false);
   readonly statusText = computed(() =>
       this.isFetching()
@@ -62,19 +65,18 @@ export class RunwayInfiniteVerticalExampleComponent {
     this.fetching = true;
     this.isFetching.set(true);
 
-    const page = await this.fetchInfinitePage(this.loadedRows, INFINITE_PAGE_SIZE);
+    const page = await this.fetchInfinitePage(this.loadedItems().length, INFINITE_PAGE_SIZE);
 
     this.fetching = false;
     this.isFetching.set(false);
-    this.loadedRows += page.length;
-    this.loadedCount.set(this.loadedRows);
+    this.loadedItems.update(rows => [...rows, ...page]);
     this.runwayWrapper()?.appendData(page);
   }
 
   // Fetches the next page as soon as the *buffered* (off-screen) range gets close to the
   // end of what's currently loaded - i.e. before the user actually hits the true bottom.
   onRangeChange(event: RangeChangeEvent): void {
-    if (event.buffered.endRow >= this.loadedRows - INFINITE_FETCH_THRESHOLD) {
+    if (event.buffered.endRow >= this.loadedItems().length - INFINITE_FETCH_THRESHOLD) {
       void this.loadMoreData();
     }
   }

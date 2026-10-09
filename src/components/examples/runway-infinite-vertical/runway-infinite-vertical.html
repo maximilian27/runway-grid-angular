@@ -1,8 +1,9 @@
-<section style="width: 450px; margin: 0; background: #f8f9fa; height: 100%;">
+<section style="width: 450px; margin: 0; background: #f8f9fa;">
   <h2>Infinite scroll (vertical)</h2>
   <app-runway-wrapper
       (rangechange)="onRangeChange($event)"
       [bufferSize]="5"
+      [items]="loadedItems()"
       [rowSize]="70"
       class="infinite-grid">
 
