@@ -1,19 +1,19 @@
-<section style="margin: 0; background: #f8f9fa;">
+<section style="margin: 0; background: #f8f9fa; height: 60px">
   <h2>Horizontal list</h2>
   <app-runway-wrapper
-      [orientation]="'horizontal'"
       [bufferSize]="5"
       [colSize]="120"
       [columns]="columns"
       [items]="placeholderData"
+      [orientation]="'horizontal'"
       class="horizontal-grid">
 
     <!-- orientation="horizontal" forces rowCount to 1, so the row item is always null -
          only the column index drives what's rendered here. -->
     <ng-template let-colIndex="col">
-      <div class="chip">
-        <span [style.background]="getColor(colIndex)" class="chip-dot"></span>
-        <strong class="chip-label">
+      <div class="chip" part="chip">
+        <span [style.background]="getColor(colIndex)" class="chip-dot" part="chip-dot"></span>
+        <strong class="chip-label" part="chip-label">
           #{{ colIndex }} {{ getLabel(colIndex) }}{{ isWide(colIndex) ? ' — extended description text to force a much wider chip' : '' }}
         </strong>
       </div>
