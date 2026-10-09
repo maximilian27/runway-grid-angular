@@ -4,8 +4,8 @@
 
 .infinite-grid {
   display: block;
-  height: 400px;
-  width: 400px;
+  height: 450px;
+  width: 450px;
 
   runway-grid::part(container) {
     box-sizing: border-box;
@@ -44,10 +44,13 @@
 
   runway-grid::part(row-even) {
     background: #ffffff;
+    width: 100%;
   }
 
   runway-grid::part(row-odd) {
     background: #f4f6f8;
+    width: 100%;
+
   }
 
   runway-grid::part(row-title) {
