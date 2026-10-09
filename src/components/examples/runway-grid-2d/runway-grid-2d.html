@@ -1,0 +1,30 @@
+<section style="height: 450px; width: 450px; margin: 0; background: #f8f9fa;">
+  <h2>2D grid</h2>
+  <app-runway-wrapper
+      [bufferSize]="3"
+      [colSize]="120"
+      [columns]="columns"
+      [items]="gridRows"
+      [orientation]="'both'"
+      [rowSize]="28"
+      class="grid-2d">
+
+    <!-- orientation="both" - both axes are virtualized independently, so both the row and
+         column index drive the cell size/content here. -->
+    <ng-template let-colIndex="col" let-rowIndex="index">
+      <div
+          [attr.part]="'grid-cell' + (isTallRow(rowIndex) ? ' tall-row' : '') + (isWideCol(colIndex) ? ' wide-col' : '')"
+          [class.tall-row]="isTallRow(rowIndex)"
+          [class.wide-col]="isWideCol(colIndex)"
+          class="grid-cell">
+        R{{ rowIndex }} x C{{ colIndex }}
+      </div>
+    </ng-template>
+
+  </app-runway-wrapper>
+
+  <div class="controls">
+    <button (click)="scrollToTopLeft()" class="top-left-btn" id="grid-top-left-btn">Top-Left (0,0)</button>
+    <button (click)="scrollToBottomRight()" class="bottom-right-btn" id="grid-bottom-right-btn">Bottom-Right (last,last)</button>
+  </div>
+</section>

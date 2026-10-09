@@ -1,0 +1,82 @@
+/* runway-grid-2d.scss */
+
+/* Target the exposed shadow parts on <runway-grid> scoped by CSS class.
+   The cell content (including our own `.grid-cell` markup) gets relocated by runway-grid
+   into its own internal shadow root, so plain class selectors never reach it - only
+   `part` attributes + `::part()` selectors survive that move, same as the other examples. */
+
+.grid-2d {
+  display: block;
+  height: 400px;
+  width: 400px;
+
+  runway-grid::part(container) {
+    box-sizing: border-box;
+  }
+
+  runway-grid::part(viewport) {
+    background: #f8f9fa;
+  }
+
+  runway-grid::part(track-vertical),
+  runway-grid::part(track-horizontal) {
+    background: #eef1f5;
+    border-radius: 4px;
+  }
+
+  runway-grid::part(cell) {
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  runway-grid::part(cell-content) {
+    box-sizing: border-box;
+  }
+
+  runway-grid::part(grid-cell) {
+    box-sizing: border-box;
+    width: 120px;
+    height: 40px;
+    padding: 8px;
+    border: 1px solid #e0e0e0;
+    color: #1a1a1a;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  runway-grid::part(tall-row) {
+    height: 150px;
+  }
+
+  runway-grid::part(wide-col) {
+    width: 300px;
+  }
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 12px 10px;
+  background: #ffffff;
+  border-top: 1px solid #e0e0e0;
+  width: 400px;
+  box-sizing: border-box;
+
+  button {
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    background: #ffffff;
+    border: 1px solid #0066ff;
+    color: #0066ff;
+    border-radius: 4px;
+    font-weight: 500;
+    font-family: inherit;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background: #0066ff;
+      color: #ffffff;
+    }
+  }
+}
