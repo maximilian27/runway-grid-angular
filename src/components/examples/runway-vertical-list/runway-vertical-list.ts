@@ -19,11 +19,8 @@ interface DemoItem {
   encapsulation: ViewEncapsulation.ShadowDom
 })
 export class RunwayVerticalListExampleComponent {
-  private readonly runwayWrapper = viewChild<RunwayWrapperComponent>(RunwayWrapperComponent);
-
-  private targetIndex: number = 50000;
-
-  private massiveDataset: DemoItem[] = Array.from({length: 100000}).map((_, i) => {
+  protected targetIndex: number = 50000;
+  protected massiveDataset: DemoItem[] = Array.from({length: 100000}).map((_, i) => {
     const isExpandable = i % 5 === 0;
     return {
       id: i,
@@ -36,24 +33,25 @@ export class RunwayVerticalListExampleComponent {
       expanded: false
     };
   });
+  private readonly runwayWrapper = viewChild<RunwayWrapperComponent>(RunwayWrapperComponent);
 
-  private toggleExpand(item: DemoItem, event: Event) {
+  protected toggleExpand(item: DemoItem, event: Event) {
     event.stopPropagation();
     item.expanded = !item.expanded;
   }
 
-  private jumpToIndex(index: number = this.targetIndex): void {
+  protected jumpToIndex(index: number = this.targetIndex): void {
     const target = Number(index);
     if (!isNaN(target)) {
       this.runwayWrapper()?.scrollToIndex(target);
     }
   }
 
-  private scrollToTop(): void {
+  protected scrollToTop(): void {
     this.runwayWrapper()?.scrollToIndex(0);
   }
 
-  private scrollToBottom(): void {
+  protected scrollToBottom(): void {
     this.runwayWrapper()?.scrollToIndex(this.massiveDataset.length - 1);
   }
 }

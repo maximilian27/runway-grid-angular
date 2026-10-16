@@ -1,0 +1,81 @@
+/* runway-sliding-vertical.scss */
+
+/* Target the exposed shadow parts on <runway-grid> scoped by CSS class */
+
+.sliding-grid {
+  display: block;
+  height: 400px;
+  max-width: 500px;
+  width: 450px;
+
+  runway-grid::part(container) {
+    box-sizing: border-box;
+  }
+
+  runway-grid::part(viewport) {
+    background: #f8f9fa;
+  }
+
+  runway-grid::part(track-vertical) {
+    background: #eef1f5;
+    border-radius: 4px;
+  }
+
+  runway-grid::part(cell) {
+    box-sizing: border-box;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  runway-grid::part(cell-content) {
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  runway-grid::part(sliding-row) {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-bottom: 1px solid #e0e0e0;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  runway-grid::part(row-even) {
+    background: #ffffff;
+    width: 100%;
+  }
+
+  runway-grid::part(row-odd) {
+    background: #f4f6f8;
+    width: 100%;
+  }
+
+  runway-grid::part(row-title) {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  runway-grid::part(row-text) {
+    margin: 0;
+    font-size: 13px;
+    color: #4a5568;
+    line-height: 1.4;
+  }
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  padding: 12px 10px;
+  border-top: 1px solid #e0e0e0;
+  width: 400px;
+  box-sizing: border-box;
+
+  .status-text {
+    font-size: 13px;
+    color: #4a5568;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+}

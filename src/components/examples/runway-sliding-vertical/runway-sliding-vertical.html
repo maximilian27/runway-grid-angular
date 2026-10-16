@@ -1,0 +1,30 @@
+<section style="width: 450px; margin: 0; background: #f8f9fa;">
+  <h2>Sliding window (vertical)</h2>
+  <app-runway-wrapper
+      (rangechange)="onRangeChange($event)"
+      [bufferSize]="5"
+      [items]="loadedItems()"
+      [rowSize]="70"
+      class="sliding-grid">
+
+    <!-- Signature: (rowItem, rowIndex, colIndex, rowCount, colCount). `rowIndex` is the
+         row's local array position, which keeps shifting down as older rows are pruned from
+         the head - the stable absolute row number instead comes from the item's own `index`. -->
+    <ng-template let-item>
+      <div
+          [attr.part]="'sliding-row ' + (item.index % 2 === 0 ? 'row-even' : 'row-odd')"
+          [class.row-even]="item.index % 2 === 0"
+          [class.row-odd]="item.index % 2 !== 0"
+          class="sliding-row">
+        <strong [style.color]="'hsl(' + titleHue(item.index) + ', 65%, 40%)'" class="row-title"
+                part="row-title">Row {{ item.index }}</strong>
+        <p class="row-text" part="row-text">{{ bodyText(item.lines) }}</p>
+      </div>
+    </ng-template>
+
+  </app-runway-wrapper>
+
+  <div class="controls">
+    <span class="status-text" id="sliding-status">{{ statusText() }}</span>
+  </div>
+</section>

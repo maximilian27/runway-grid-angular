@@ -16,32 +16,32 @@ interface GridRow {
   encapsulation: ViewEncapsulation.ShadowDom
 })
 export class RunwayGrid2dExampleComponent {
-  readonly runwayWrapper = viewChild<RunwayWrapperComponent>(RunwayWrapperComponent);
+  protected readonly runwayWrapper = viewChild<RunwayWrapperComponent>(RunwayWrapperComponent);
 
-  readonly rowCount = GRID_ROWS;
-  readonly colCount = GRID_COLS;
+  protected readonly rowCount = GRID_ROWS;
+  protected readonly colCount = GRID_COLS;
 
   // Column definitions (drives colCount = 500). The wrapper applies `columns` to the
   // native element before `items`/`data`, mirroring the underlying <runway-grid> contract.
-  readonly columns: string[] = Array.from({length: GRID_COLS}, (_, c) => `Col ${c}`);
+  protected readonly columns: string[] = Array.from({length: GRID_COLS}, (_, c) => `Col ${c}`);
 
   // Row data - each row just needs to exist; actual cell content is computed from
   // (rowIndex, colIndex) inside the template below.
-  readonly gridRows: GridRow[] = Array.from({length: GRID_ROWS}, (_, r) => ({id: r}));
+  protected readonly gridRows: GridRow[] = Array.from({length: GRID_ROWS}, (_, r) => ({id: r}));
 
-  isTallRow(rowIndex: number): boolean {
+  protected isTallRow(rowIndex: number): boolean {
     return rowIndex % 10 === 0;
   }
 
-  isWideCol(colIndex: number): boolean {
+  protected isWideCol(colIndex: number): boolean {
     return colIndex % 5 === 0;
   }
 
-  scrollToTopLeft(): void {
+  protected scrollToTopLeft(): void {
     this.runwayWrapper()?.scrollToCell(0, 0);
   }
 
-  scrollToBottomRight(): void {
+  protected scrollToBottomRight(): void {
     this.runwayWrapper()?.scrollToCell(this.rowCount - 1, this.colCount - 1);
   }
 }

@@ -61,6 +61,11 @@ export class RunwayWrapperComponent implements OnInit {
     return this.gridRef()?.nativeElement?.rows ?? [];
   }
 
+  // Number of rows currently known to the underlying grid.
+  public get rowCount(): number {
+    return this.gridRef()?.nativeElement?.rowCount ?? 0;
+  }
+
   public ngOnInit() {
     this.gridRef().nativeElement.template = (
         item: any,
@@ -113,6 +118,15 @@ export class RunwayWrapperComponent implements OnInit {
     const grid = this.gridRef()?.nativeElement;
     if (grid && typeof grid.appendData === 'function') {
       grid.appendData(newItems);
+    }
+  }
+
+  // Non-destructively drops the first `count` items from the head of the data set,
+  // counter-scrolling the viewport by the removed height to keep scrolling seamless.
+  public removeDataFromHead(count: number): void {
+    const grid = this.gridRef()?.nativeElement;
+    if (grid && typeof grid.removeDataFromHead === 'function') {
+      grid.removeDataFromHead(count);
     }
   }
 }

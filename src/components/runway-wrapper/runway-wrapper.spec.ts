@@ -44,11 +44,26 @@ describe('RunwayWrapperComponent', () => {
     expect(grid.appendData).toHaveBeenCalledWith(newItems);
   });
 
+  it('should delegate removeDataFromHead to native grid element', () => {
+    const grid = component.gridRef().nativeElement;
+    grid.removeDataFromHead = vi.fn();
+
+    component.removeDataFromHead(50);
+    expect(grid.removeDataFromHead).toHaveBeenCalledWith(50);
+  });
+
   it('should read rows from the native grid element', () => {
     const grid = component.gridRef().nativeElement;
     grid.rows = [{id: 1}, {id: 2}, {id: 3}];
 
     expect(component.rows).toEqual([{id: 1}, {id: 2}, {id: 3}]);
+  });
+
+  it('should read rowCount from the native grid element', () => {
+    const grid = component.gridRef().nativeElement;
+    Object.defineProperty(grid, 'rowCount', { value: 42, configurable: true });
+
+    expect(component.rowCount).toBe(42);
   });
 
   it('should emit rangechange when the native grid dispatches a rangechange event', () => {

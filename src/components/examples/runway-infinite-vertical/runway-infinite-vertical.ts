@@ -22,21 +22,20 @@ const INFINITE_FETCH_THRESHOLD = 15;
   encapsulation: ViewEncapsulation.ShadowDom
 })
 export class RunwayInfiniteVerticalExampleComponent {
-  readonly runwayWrapper = viewChild<RunwayWrapperComponent>(RunwayWrapperComponent);
-
-  private fetching = false;
+  protected readonly runwayWrapper = viewChild<RunwayWrapperComponent>(RunwayWrapperComponent);
+  // default), rather than relying solely on imperative `appendData()` calls.
+  protected readonly loadedItems = signal<InfiniteRow[]>([]);
 
   // The actual rows loaded so far - bound to the wrapper's `items` input so the native
   // grid is always initialized/kept in sync with real data (not the wrapper's empty
-  // default), rather than relying solely on imperative `appendData()` calls.
-  readonly loadedItems = signal<InfiniteRow[]>([]);
-  readonly loadedCount = computed(() => this.loadedItems().length);
-  readonly isFetching = signal(false);
-  readonly statusText = computed(() =>
+  protected readonly loadedCount = computed(() => this.loadedItems().length);
+  protected readonly isFetching = signal(false);
+  protected readonly statusText = computed(() =>
       this.isFetching()
           ? `Loaded ${this.loadedCount()} items - fetching more…`
           : `Loaded ${this.loadedCount()} items`
   );
+  private fetching = false;
 
   constructor() {
     // Kick off the very first page once the view (and the wrapper's native grid) is ready.
@@ -44,23 +43,9 @@ export class RunwayInfiniteVerticalExampleComponent {
   }
 
   // Simulates a paginated backend endpoint: resolves after a short network-like delay with
-  // a page of items whose rendered height will vary from row to row (variable line count).
-  private fetchInfinitePage(offset: number, limit: number): Promise<InfiniteRow[]> {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const page = Array.from({length: limit}, (_, i) => {
-          const index = offset + i;
-          return {index, lines: 1 + (index % 4)}; // 1-4 lines of body text -> variable height
-        });
-        resolve(page);
-      }, 400);
-    });
-  }
 
-  // Fetches the next page and appends it via the wrapper's `appendData()` - preserving the
-  // current scroll position instead of resetting it like assigning `items` would. Also used
   // to load the very first page, since `appendData()` builds the registry on first use.
-  async loadMoreData(): Promise<void> {
+  protected async loadMoreData(): Promise<void> {
     if (this.fetching) return;
     this.fetching = true;
     this.isFetching.set(true);
@@ -73,19 +58,36 @@ export class RunwayInfiniteVerticalExampleComponent {
     this.runwayWrapper()?.appendData(page);
   }
 
-  // Fetches the next page as soon as the *buffered* (off-screen) range gets close to the
+  // Fetches the next page and appends it via the wrapper's `appendData()` - preserving the
+  // current scroll position instead of resetting it like assigning `items` would. Also used
+
   // end of what's currently loaded - i.e. before the user actually hits the true bottom.
-  onRangeChange(event: RangeChangeEvent): void {
+  protected onRangeChange(event: RangeChangeEvent): void {
     if (event.buffered.endRow >= this.loadedItems().length - INFINITE_FETCH_THRESHOLD) {
       void this.loadMoreData();
     }
   }
 
-  bodyText(lines: number): string {
+  // Fetches the next page as soon as the *buffered* (off-screen) range gets close to the
+
+  protected bodyText(lines: number): string {
     return 'Simulated content fetched from the server. '.repeat(lines);
   }
 
-  titleHue(index: number): number {
+  protected titleHue(index: number): number {
     return (index * 47) % 360;
+  }
+
+  // a page of items whose rendered height will vary from row to row (variable line count).
+  private fetchInfinitePage(offset: number, limit: number): Promise<InfiniteRow[]> {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        const page = Array.from({length: limit}, (_, i) => {
+          const index = offset + i;
+          return {index, lines: 1 + (index % 4)}; // 1-4 lines of body text -> variable height
+        });
+        resolve(page);
+      }, 400);
+    });
   }
 }
