@@ -8,13 +8,13 @@ export interface SlidingRow {
 }
 
 // Number of rows fetched per simulated "page".
-export const SLIDING_PAGE_SIZE = 100;
+export const SLIDING_PAGE_SIZE = 50;
 // Hard cap on how many rows may be loaded at once - once exceeded, the oldest rows are
 // pruned from the head so the array (and WASM vectors) never grow past this size.
-export const SLIDING_MAX_ROWS = 1000;
+export const SLIDING_MAX_ROWS = 250;
 // How many rows of runway may still be left in the buffered range before the next page
 // is requested, same idea as the plain infinite-scroll example's threshold.
-export const SLIDING_FETCH_THRESHOLD = 30;
+export const SLIDING_FETCH_THRESHOLD = 15;
 
 @Component({
   selector: 'app-runway-sliding-vertical-example, app-runway-sliding-window-vertical-example',
